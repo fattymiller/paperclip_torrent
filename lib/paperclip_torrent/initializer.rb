@@ -1,0 +1,1 @@
+Paperclip.options[:content_type_mappings] = { torrent: 'application/x-bittorrent' }
