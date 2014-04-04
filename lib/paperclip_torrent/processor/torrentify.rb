@@ -26,7 +26,7 @@ module Paperclip
 
       begin
         torrent_file = PaperclipTorrent::TorrentFile.create_for(@file, @options, @attachment)
-        self.class.log "  torrent file created at: #{torrent_file.path}"
+        self.class.log "  torrent file created"
 
         @attachment.add_torrent_result(@style_key, torrent_file)
         self.class.log "  pending torrent files: #{@attachment.torrent_results.keys.count}"
@@ -51,8 +51,8 @@ module Paperclip
       instance.torrent_files.where({ :torrent_key => torrent_key }).first if torrent_key
     end
 
-    def add_torrent_result(key, result_file)
-      torrent_results[key] = result_file
+    def add_torrent_result(key, torrent_file)
+      torrent_results[key] = torrent_file
       instance.add_torrentable_field(name) if instance.respond_to?(:add_torrentable_field)
     end
     
@@ -63,7 +63,7 @@ module Paperclip
         next unless file
         
         torrent_file_record = instance.torrent_files.where({ torrent_key: key }).first_or_create
-        torrent_file_record.attachment = file
+        torrent_file_record.attachment = file.save
         torrent_file_record.save!
       end
       

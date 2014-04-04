@@ -107,6 +107,8 @@ Still to do
 Still on my to do list for this project:
  - Customisable torrent file save path
  - Support multiple attachment fields by storing the attachment name in the TorrentFileAttachment class
+ - Open existing torrent
+ - Auto load torrent when accessing an existing record
 
 License
 ---

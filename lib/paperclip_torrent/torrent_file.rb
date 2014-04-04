@@ -9,7 +9,7 @@ module PaperclipTorrent
       directory_path_pattern = options[:torrent_path] || PaperclipTorrent::Config.settings[:torrent_path]
       directory_path = Paperclip::Interpolations.interpolate(directory_path_pattern, paperclip_attachment, options[:style]) if directory_path_pattern
       
-      self.new(file, options[:tracker], directory_path, options[:piece_size]).save
+      self.new(file, options[:tracker], directory_path, options[:piece_size])
     end
     
     def initialize(source_file, tracker_url, directory_path, piece_size = nil)
