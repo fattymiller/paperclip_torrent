@@ -50,7 +50,7 @@ This will add a `has_many torrent_files` association and add `persist_torrent_fi
 #### Retrieving records
 If your model responds to `torrent_results`, you can call `<attachment_field>.torrent_files` at any time to fetch available torrent keys.
 
-This method will result in a hash of torrent key and file instance. 
+This method will result in a hash of torrent key and file properties hash: `{ torrent_file: TorrentFile, dirty: boolean }`. 
 
 If the file instance is nil, you can fetch the paperclip record by calling `<attachment_field>.torrent_file(torrent_key)`. From here you can access the file path or URL as normal.
 

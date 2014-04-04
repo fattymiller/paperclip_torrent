@@ -52,19 +52,23 @@ module Paperclip
     end
 
     def add_torrent_result(key, torrent_file)
-      torrent_results[key] = torrent_file
+      torrent_results[key] = { torrent_file: torrent_file, dirty: true }
       instance.add_torrentable_field(name) if instance.respond_to?(:add_torrentable_field)
     end
     
     def persist_torrents
       return unless instance.respond_to?(:torrent_files)
       
-      torrent_results.each do |key, file|
-        next unless file
+      torrent_results.each do |key, result|
+        file = result[:torrent_file]
+        dirty = result[:dirty]
+        next unless file && dirty
         
         torrent_file_record = instance.torrent_files.where({ torrent_key: key }).first_or_create
         torrent_file_record.attachment = file.save
         torrent_file_record.save!
+        
+        result[:dirty] = false
       end
       
       true
@@ -74,7 +78,7 @@ module Paperclip
     
     def default_torrent_results
       result = {}
-      instance.torrent_files.select(:torrent_key).collect(&:torrent_key).each { |key| result[key] = nil } if instance.respond_to?(:torrent_files)
+      instance.torrent_files.select(:torrent_key).collect(&:torrent_key).each { |key| result[key] = { torrent_file: nil, dirty: false } } if instance.respond_to?(:torrent_files)
       
       result
     end
