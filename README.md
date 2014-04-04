@@ -52,7 +52,7 @@ If your model responds to `torrent_results`, you can call `<attachment_field>.to
 
 This method will result in a hash of torrent key and file instance. 
 
-If the file instance is nil, you can fetch the paperclip record by calling `<attachment_field>.torrent_file(torrent_key)`. From here you can access to file path or URL as normal.
+If the file instance is nil, you can fetch the paperclip record by calling `<attachment_field>.torrent_file(torrent_key)`. From here you can access the file path or URL as normal.
 
 
 Settings
