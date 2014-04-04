@@ -48,7 +48,7 @@ module Paperclip
     end
     
     def torrent_file(torrent_key)
-      instance.torrent_files.where({ :torrent_key => torrent_key }).first if torrent_key
+      instance.torrent_files.where({ :torrent_key => torrent_key }).first if torrent_key && instance.respond_to?(:torrent_files)
     end
 
     def add_torrent_result(key, torrent_file)
