@@ -18,12 +18,12 @@ gem 'paperclip_torrent', github: "fattymiller/paperclip_torrent"
 In your model, setup your `has_attached_files` as normal, including the `:torrentify` processor like so:
 
 ```
-  has_attached_file :attachment, { styles: {
-    audio_128kbps_44100hz: { format: 'mp3', torrentify: true }, 
-    hd_720p_16x9_5000kbps: { geometry: '1280x720', format: 'mp4', torrentify: true }, 
+has_attached_file :attachment, { styles: {
+  audio_128kbps_44100hz: { format: 'mp3', torrentify: true }, 
+  hd_720p_16x9_5000kbps: { geometry: '1280x720', format: 'mp4', torrentify: true }, 
 
-    preview_image: { geometry: '1024x768', format: 'jpg', time: 10 }
-  }, processors: [:ffmpeg, :qtfaststart, :torrentify] }
+  preview_image: { geometry: '1024x768', format: 'jpg', time: 10 }
+}, processors: [:ffmpeg, :qtfaststart, :torrentify] }
 ```
 
 The above example shows three paperclip styles to be parsed by ffmpeg processors, two of which (based on the `torrentify: true` setting) will output torrent files.
@@ -65,19 +65,19 @@ To generate a torrent file from a Paperclip style, two things are required `torr
 **For example,** either of the following will work:
 
 ```
-  has_attached_file :attachment, { styles: {
-    audio_128kbps_44100hz: { format: 'mp3', torrentify: true }
-  }, 
-  processors: [:ffmpeg, :qtfaststart, :torrentify],
-  tracker: "http://tracker.mysite.com/announce" }
+has_attached_file :attachment, { styles: {
+  audio_128kbps_44100hz: { format: 'mp3', torrentify: true }
+}, 
+processors: [:ffmpeg, :qtfaststart, :torrentify],
+tracker: "http://tracker.mysite.com/announce" }
 ```
 
 ```
-  has_attached_file :attachment, { styles: {
-    audio_128kbps_44100hz: { format: 'mp3', torrentify: true, tracker: "http://tracker.mysite.com/announce" },
-    hd_720p_16x9_5000kbps: { geometry: '1280x720', format: 'mp4', torrentify: true, tracker: "http://tracker.anothersite.com/announce" }
-  }, 
-  processors: [:ffmpeg, :qtfaststart, :torrentify] }
+has_attached_file :attachment, { styles: {
+  audio_128kbps_44100hz: { format: 'mp3', torrentify: true, tracker: "http://tracker.mysite.com/announce" },
+  hd_720p_16x9_5000kbps: { geometry: '1280x720', format: 'mp4', torrentify: true, tracker: "http://tracker.anothersite.com/announce" }
+}, 
+processors: [:ffmpeg, :qtfaststart, :torrentify] }
 ```
 
 ### Download file save path
@@ -96,8 +96,8 @@ The default values for the config hash are:
 
 ```
 PaperclipTorrent::Config.settings = {
-    torrent_path: ":fingerprint/:style/:filename",
-    default_piece_size: 256.kilobytes
+  torrent_path: ":fingerprint/:style/:filename",
+  default_piece_size: 256.kilobytes
 }
 ```
 
@@ -107,7 +107,6 @@ Still to do
 Still on my to do list for this project:
  - Customisable torrent file save path
  - Support multiple attachment fields by storing the attachment name in the TorrentFileAttachment class
- - Open existing torrent
  - Auto load torrent when accessing an existing record
 
 License
