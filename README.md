@@ -15,7 +15,7 @@ gem 'paperclip', github: "thoughtbot/paperclip"
 gem 'paperclip_torrent', github: "fattymiller/paperclip_torrent"
 ```
 
-In your model, setup your `has_attached_files` as normal, including the `:torrentify` processor like so:
+In your model, setup your `has_attached_file` as normal, including the `:torrentify` processor like so:
 
 ```
   has_attached_file :attachment, { styles: {
