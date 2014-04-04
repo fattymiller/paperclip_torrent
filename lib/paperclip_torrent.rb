@@ -1,3 +1,5 @@
+require "paperclip_torrent/version"
+
 require "paperclip_torrent/config"
 require "paperclip_torrent/initializer"
 
