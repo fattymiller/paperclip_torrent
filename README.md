@@ -15,7 +15,7 @@ gem 'paperclip', github: "thoughtbot/paperclip"
 gem 'paperclip_torrent', github: "fattymiller/paperclip_torrent"
 ```
 
-In your model, setup your `has_attached_file` as normal, including the `:torrentify` processor like so:
+In your model, setup your `has_attached_files` as normal, including the `:torrentify` processor like so:
 
 ```
   has_attached_file :attachment, { styles: {
@@ -35,8 +35,11 @@ To access your generated torrent files, create an `after_save` callback, and ite
 Optionally, PaperclipTorrent can be setup to automatically save your torrent files against your model on save when new files are detected. To do so:
 
 
-#### Run the installer
-`rails generate paperclip_torrent:install`
+#### Run the installer and migrate
+```
+rails generate paperclip_torrent:install
+bundle exec rake db:migrate
+```
 
 
 #### Include in your model
@@ -59,7 +62,7 @@ Settings
 
 To generate a torrent file from a Paperclip style, two things are required `torrentify: true` and `tracker: <tracker_announce_url>`
 
-**For example** Either of the following will work:
+**For example,** either of the following will work:
 
 ```
   has_attached_file :attachment, { styles: {
