@@ -67,6 +67,9 @@ module Paperclip
         torrent_file_record.attachment = file.save
         torrent_file_record.save!
         
+        # set this so we can update it if we need to
+        file.current_save_path = torrent_file_record.attachment.path
+        
         result[:dirty] = false
       end
       
@@ -77,7 +80,7 @@ module Paperclip
     
     def default_torrent_results
       result = {}
-      instance.torrent_files.for(name).each { |existing| result[existing.torrent_key] = { torrent_file: PaperclipTorrent::TorrentFile.open_from_torrent_file_attachment(existing), dirty: false } } if instance.respond_to?(:torrent_files)
+      instance.torrent_files.for(name).each { |existing| result[existing.torrent_key.to_sym] = { torrent_file: PaperclipTorrent::TorrentFile.open_from_torrent_file_attachment(existing), dirty: false } } if instance.respond_to?(:torrent_files)
       
       result
     end

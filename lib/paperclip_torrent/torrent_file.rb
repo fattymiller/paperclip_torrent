@@ -15,7 +15,7 @@ module PaperclipTorrent
       
       instance.attachment = paperclip_attachment
       instance.attachment_style = options[:style]
-      instance.download_path_pattern = options[:torrent_path] || PaperclipTorrent::Config.settings[:torrent_path]
+      instance.download_path_pattern = options[:torrent_path]
       
       instance
     end
@@ -26,6 +26,7 @@ module PaperclipTorrent
       instance = self.new
       instance.existing_info = torrent_hash.delete("info")
       instance.existing_header = torrent_hash
+      instance.current_save_path = filepath
       
       instance
     end
@@ -90,7 +91,7 @@ module PaperclipTorrent
       @existing_torrent_download_path = nil
     end
     def download_path_pattern
-      @download_path_pattern
+      @download_path_pattern || PaperclipTorrent::Config.settings[:torrent_path]
     end
         
     def piece_size=(piece_size)
@@ -107,6 +108,13 @@ module PaperclipTorrent
       @filesize ||= ensure_source_file!.size
     end
     
+    def current_save_path=(path)
+      @current_save_path = path
+    end
+    def current_save_path
+      @current_save_path
+    end
+    
     def build(refresh = true)
       header(refresh).merge(download_path ? build_directory : build_single_file).bencode
     end
@@ -119,12 +127,18 @@ module PaperclipTorrent
       
       tempfile      
     end
+    def update!
+      return save if !self.current_save_path
+      File.write(self.current_save_path, build(true), { mode: "r+b" })
+    end
     
     private
     
     def full_filepath
       path = download_path
-      path ? path.split(File::SEPARATOR) : [File.basename(source_file_path)]
+      fullpath = path ? path.split(File::SEPARATOR) : [File.basename(source_file_path)]
+      
+      fullpath.reject(&:blank?)
     end
 
     def header(refresh = false)
