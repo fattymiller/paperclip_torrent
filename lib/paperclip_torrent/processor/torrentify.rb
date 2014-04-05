@@ -77,7 +77,7 @@ module Paperclip
     
     def default_torrent_results
       result = {}
-      instance.torrent_files.for(name).select(:torrent_key).collect(&:torrent_key).each { |key| result[key] = { torrent_file: nil, dirty: false } } if instance.respond_to?(:torrent_files)
+      instance.torrent_files.for(name).each { |existing| result[existing.torrent_key] = { torrent_file: PaperclipTorrent::TorrentFile.open_from_torrent_file_attachment(existing), dirty: false } } if instance.respond_to?(:torrent_files)
       
       result
     end

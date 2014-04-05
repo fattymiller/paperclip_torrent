@@ -39,6 +39,15 @@ module PaperclipTorrent
       
       instance
     end
+    def self.open_from_torrent_file_attachment(file_attachment)
+      torrentable = file_attachment.torrentable
+      return nil unless torrentable
+      
+      attachment = torrentable.send(file_attachment.attachment_instance) if file_attachment.attachment_instance && torrentable.respond_to?(file_attachment.attachment_instance)
+      return nil unless attachment
+      
+      open_from_attachment(attachment, file_attachment.torrent_key)
+    end
     
     def source_file=(file)
       @source_file = file

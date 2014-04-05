@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    paperclip_torrent (0.5.2)
+    paperclip_torrent (0.6)
       bencode (~> 0.8.0)
       paperclip (>= 4.1.1)
       rails (~> 4.0.1)

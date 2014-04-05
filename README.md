@@ -111,12 +111,6 @@ PaperclipTorrent::Config.settings = {
 }
 ```
 
-Still to do
----
-
-Still on my to do list for this project:
- - Auto load torrent when accessing an existing record
-
 License
 ---
 
