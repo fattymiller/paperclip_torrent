@@ -115,7 +115,6 @@ Still to do
 ---
 
 Still on my to do list for this project:
- - Support multiple attachment fields by storing the attachment name in the TorrentFileAttachment class
  - Auto load torrent when accessing an existing record
 
 License
