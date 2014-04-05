@@ -34,18 +34,28 @@ To access your generated torrent files, create an `after_save` callback, and ite
 
 Optionally, PaperclipTorrent can be setup to automatically save your torrent files against your model on save when new files are detected. To do so:
 
-
 #### Run the installer and migrate
 ```
 rails generate paperclip_torrent:install
 bundle exec rake db:migrate
 ```
 
-
 #### Include in your model
-`include PaperclipTorrent::Torrentable`
+```
+include PaperclipTorrent::Torrentable
+```
 
 This will add a `has_many torrent_files` association and add `persist_torrent_files` to your model's `after_save` callback.
+
+##### Customise
+
+To customise the `PaperclipTorrent::TorrentFileAttachment#attachment`, override the definition in an initializer. 
+
+For example:
+```
+PaperclipTorrent::TorrentFileAttachment.attachment_definitions[:attachment][:path] = ":rails_env/:class/:hash.:extension"
+PaperclipTorrent::TorrentFileAttachment.attachment_definitions[:attachment][:hash_secret] = "secret_hash_value"
+```
 
 #### Retrieving records
 If your model responds to `torrent_results`, you can call `<attachment_field>.torrent_files` at any time to fetch available torrent keys.
@@ -105,7 +115,6 @@ Still to do
 ---
 
 Still on my to do list for this project:
- - Customisable torrent file save path
  - Support multiple attachment fields by storing the attachment name in the TorrentFileAttachment class
  - Auto load torrent when accessing an existing record
 
