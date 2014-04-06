@@ -15,12 +15,12 @@ module PaperclipTorrent
     private
 
     def copy_migration(filename)
-      # begin
+      begin
         destination_filename = filename.split("_")[1..-1].join("_")
         migration_template "#{filename}.rb", "db/migrate/#{destination_filename}.rb"
-      # rescue
+      rescue
         # swallow
-      # end
+      end
     end
   end
 end
