@@ -9,11 +9,11 @@ Gem::Specification.new do |s|
   s.version     = PaperclipTorrent::VERSION
   s.authors     = ["fattymiller"]
   s.email       = ["fatty@mobcash.com.au"]
-  s.homepage    = "https://github.com/fattymiller/base_jump"
+  s.homepage    = "https://github.com/fattymiller/paperclip_torrent"
   s.summary     = "Create a torrent file to compliment your paperclip attachment."
   s.description = "Create a torrent file to compliment your paperclip attachment."
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.0.1"
