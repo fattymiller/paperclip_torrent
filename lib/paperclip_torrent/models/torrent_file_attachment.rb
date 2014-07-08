@@ -8,5 +8,9 @@ module PaperclipTorrent
 
     has_attached_file :attachment
     validates_attachment_content_type :attachment, content_type: "application/x-bittorrent"
+    
+    def open
+      PaperclipTorrent::TorrentFile.open_from_torrent_file_attachment(self)
+    end
   end
 end

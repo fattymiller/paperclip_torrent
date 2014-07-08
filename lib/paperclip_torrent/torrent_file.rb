@@ -93,7 +93,10 @@ module PaperclipTorrent
     def download_path_pattern
       @download_path_pattern || PaperclipTorrent::Config.settings[:torrent_path]
     end
-        
+    def download_path_pattern!
+      self.download_path_pattern = self.download_path_pattern
+    end
+    
     def piece_size=(piece_size)
       @piece_size = piece_size
     end
@@ -125,11 +128,10 @@ module PaperclipTorrent
       tempfile.write(build(true))
       tempfile.rewind
       
-      tempfile      
+      tempfile
     end
     def update!
-      return save if !self.current_save_path
-      File.write(self.current_save_path, build(true), { mode: "r+b" })
+      !!self.current_save_path ? File.write(self.current_save_path, build(true), { mode: "r+b" }) : save
     end
     
     private
