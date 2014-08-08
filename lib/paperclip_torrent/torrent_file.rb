@@ -21,7 +21,7 @@ module PaperclipTorrent
     end
     def self.open_from_file(filepath)
       torrent_file_contents = open(filepath).read
-      torrent_hash = BEncode.load(torrent_file_contents)
+      torrent_hash = BEncode.load(torrent_file_contents, ignore_trailing_junk: true)
       
       instance = self.new
       instance.existing_info = torrent_hash.delete("info")
@@ -61,6 +61,13 @@ module PaperclipTorrent
     
     def existing_header=(existing_header)
       self.tracker_url = existing_header.delete("announce")
+      
+      # "11\n12\n\n21\n22" => [[11,12], [21,22]]
+      # [[11,12], [21,22]] => "['11\n12', '21\n22']" => "11\n12\n\n21\n22"
+
+      announce_list = existing_header.delete("announce-list")
+      self.tracker_url ||= announce_list.collect { |aa| aa.is_a?(Array) ? aa.reject(&:blank?).join(TorrentFile.tracker_seperator) : aa }.reject(&:blank?).join(TorrentFile.tracker_tier_seperator) if announce_list && announce_list.is_a?(Array)
+      
       @existing_header = existing_header
     end
     def existing_info=(existing_info)
@@ -134,6 +141,13 @@ module PaperclipTorrent
       !!self.current_save_path ? File.write(self.current_save_path, build(true), { mode: "r+b" }) : save
     end
     
+    def self.tracker_seperator
+      "\n"
+    end
+    def self.tracker_tier_seperator
+      "\n\n"
+    end
+    
     private
     
     def full_filepath
@@ -146,7 +160,13 @@ module PaperclipTorrent
     def header(refresh = false)
       raise "'tracker_url' required for PaperclipTorrent::TorrentFile#initialize" unless tracker_url
       
-      header = { 'announce' => tracker_url }
+      # "11\n12\n\n21\n22" => [[11,12], [21,22]]
+      # [[11,12], [21,22]] => "['11\n12', '21\n22']" => "11\n12\n\n21\n22"
+      
+      announce_url = tracker_url.gsub("\r", "").split(TorrentFile.tracker_tier_seperator).collect { |i| i.split(TorrentFile.tracker_seperator) }
+      flattened = announce_url.flatten.reject(&:blank?)
+      
+      header = flattened.size == 1 ? { 'announce' => flattened.first } : { 'announce-list' => announce_url }
       
       if refresh || !@existing_header
         header.merge!({ 
