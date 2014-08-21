@@ -19,9 +19,11 @@ module PaperclipTorrent
       
       instance
     end
-    def self.open_from_file(filepath)
+    def self.open_from_file(filepath, options = {})
+      options ||= {}
+      
       torrent_file_contents = open(filepath).read
-      torrent_hash = BEncode.load(torrent_file_contents, ignore_trailing_junk: true)
+      torrent_hash = BEncode.load(torrent_file_contents, ignore_trailing_junk: !!options[:ignore_trailing_junk])
       
       instance = self.new
       instance.existing_info = torrent_hash.delete("info")
@@ -138,7 +140,7 @@ module PaperclipTorrent
       tempfile
     end
     def update!
-      !!self.current_save_path ? File.write(self.current_save_path, build(true), { mode: "r+b" }) : save
+      !!self.current_save_path ? File.write(self.current_save_path, build(true), { mode: "wb" }) : save
     end
     
     def self.tracker_seperator
