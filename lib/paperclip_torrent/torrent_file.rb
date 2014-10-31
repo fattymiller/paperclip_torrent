@@ -22,13 +22,19 @@ module PaperclipTorrent
     def self.open_from_file(filepath, options = {})
       options ||= {}
       
-      torrent_file_contents = open(filepath).read
-      torrent_hash = BEncode.load(torrent_file_contents, ignore_trailing_junk: !!options[:ignore_trailing_junk])
+      instance = nil
       
-      instance = self.new
-      instance.existing_info = torrent_hash.delete("info")
-      instance.existing_header = torrent_hash
-      instance.current_save_path = filepath
+      begin
+        torrent_file_contents = open(filepath).read
+        torrent_hash = BEncode.load(torrent_file_contents, ignore_trailing_junk: !!options[:ignore_trailing_junk])
+      
+        instance = self.new
+        instance.existing_info = torrent_hash.delete("info")
+        instance.existing_header = torrent_hash
+        instance.current_save_path = filepath
+      rescue => e
+        instance = nil
+      end
       
       instance
     end
