@@ -43,6 +43,8 @@ module PaperclipTorrent
       return nil unless file_attachment
       
       instance = open_from_file(file_attachment.attachment.path)
+      return nil unless instance
+      
       instance.attachment = attachment
       instance.attachment_style = style_key
       
