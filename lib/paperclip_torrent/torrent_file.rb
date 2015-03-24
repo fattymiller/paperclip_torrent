@@ -62,8 +62,8 @@ module PaperclipTorrent
     
     def source_file=(file)
       @source_file = file
-      @source_file_hash = nil
-      @filesize = nil
+      @source_file_hash = source_file_hash
+      @filesize = file.size
     end
     def source_file
       @source_file
